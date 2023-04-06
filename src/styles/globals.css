@@ -6,7 +6,7 @@
 
 @font-face {
     font-family: 'Pixel';
-    src: url('../../fonts/pixel.ttf') format("truetype"),
+    src: url('../../fonts/pixel.ttf') format("opentype"),
         url('../../fonts/pixel.woff') format("woff"),
         url('../../fonts/pixel.woff2') format("woff2");
 }
