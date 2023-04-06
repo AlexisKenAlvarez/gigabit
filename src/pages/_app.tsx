@@ -15,7 +15,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
 
   return (
     <AnimatePresence mode="wait">
-      <div className="" key={router.pathname}>
+      <div className="font-pixel" key={router.pathname}>
         <SessionProvider session={session}>
           <Component {...pageProps} />
         </SessionProvider>
