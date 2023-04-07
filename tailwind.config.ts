@@ -8,7 +8,9 @@ export default {
         lblue: '#D4F7FF',
         grn: '#7A9F31',
         bttn: '#3D253D',
-        google: '#3283FC'
+        google: '#3283FC',
+        bttnHover: '#523152',
+        err: '#AC4B3E'
       },
       fontFamily: {
         pixel: ['Pixel'],

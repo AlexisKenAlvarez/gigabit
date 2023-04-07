@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
-import { loginType, registerType, registerValues } from "utils/interface";
+import { loginType, loginValues, registerValues } from "utils/interface";
 
-const InputBox: FC<registerType> = (props) => {
+const InputBoxLogin: FC<loginType> = (props) => {
 
     const { onChange, title, error, ...items } = props
     const [focus, setFocus] = useState(false)
@@ -26,9 +26,9 @@ const InputBox: FC<registerType> = (props) => {
                 <h2 className="capitalize" style={focus ? { display: "none" } : { display: "block" }}>{props.name}</h2>
             </div>
             <input
-                className={` h-10 border-[1px]  rounded-lg outline-none caret-white p-3 w-full pl-9  transition-background ease-in-out duration-100 ${error[props.name as keyof registerValues] !== '' ? 'border-err bg-err/30 group-hover:bg-err/50' : 'border-grn bg-grn/30 group-hover:bg-grn/50'}`} {...items} title={title} onChange={onChange} onFocus={handleFocus} onBlur={handleBlur} autoComplete="off" ></input>
+                className={` h-10 border-[1px]  rounded-lg outline-none caret-white p-3 w-full pl-9  transition-background ease-in-out duration-100 ${error[props.name as keyof loginValues] !== '' ? 'border-err bg-err/30 group-hover:bg-err/50' : 'border-grn bg-grn/30 group-hover:bg-grn/50'}`} {...items} title={title} onChange={onChange} onFocus={handleFocus} onBlur={handleBlur} autoComplete="off" ></input>
         </div>
     );
 }
 
-export default InputBox;
+export default InputBoxLogin;

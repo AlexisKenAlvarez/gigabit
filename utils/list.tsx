@@ -1,4 +1,5 @@
 import { FaUser, FaLock } from 'react-icons/fa'
+import { MdEmail } from 'react-icons/md'
 
 
 export const cloudList = [
@@ -13,6 +14,27 @@ export const inputList = [
         type: "text",
         label: "username",
         icon: <FaUser />
+    },
+    {
+        name: "password",
+        type: "password",
+        label: "password",
+        icon: <FaLock />
+    },
+]
+
+export const registerInput = [
+    {
+        name: "username",
+        type: "text",
+        label: "username",
+        icon: <FaUser />
+    },
+    {
+        name: "email",
+        type: "text",
+        label: "email",
+        icon: <MdEmail />
     },
     {
         name: "password",
