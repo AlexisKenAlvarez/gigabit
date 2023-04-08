@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 import { hash } from 'bcrypt';
+import { registerValues } from 'utils/interface';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 
@@ -15,8 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 }
 
 async function register(req: NextApiRequest, res: NextApiResponse) {
-
-    const { username, email, password } = req.body
+    const { username, email, password }: registerValues = req.body
 
     const hashed = await hash(password, 10)
 

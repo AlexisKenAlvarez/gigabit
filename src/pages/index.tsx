@@ -1,11 +1,11 @@
-import { type NextPage } from "next";
+import { GetServerSideProps, type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { AuthUser } from "utils/interface";
 import { GetSessionParams, signOut } from "next-auth/react";
 import { getSession } from "next-auth/react";
 
-export async function getServerSideProps(context: GetSessionParams | undefined) {
+export const  getServerSideProps: GetServerSideProps<AuthUser> = async (context: GetSessionParams | undefined) => {
     const session = await getSession(context)
 
     if (!session) {

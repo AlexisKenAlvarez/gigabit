@@ -38,34 +38,39 @@ export const authOptions: NextAuthOptions = ({
             async authorize(credentials, req) {
                 // Add logic here to look up the user from the credentials supplied
 
-                    const user = await prisma.user.findUnique({
-                        where: {
-                            email: credentials?.email
-                        }
-                    })
-
-                    if (user) {
-                        const match = await compare(credentials!.password, user.password as string)
-
-                        console.log(match)
-
-                        if (match) {
-                            return user
-
-                        } else {
-                            return null
-                        }
+                const user = await prisma.user.findUnique({
+                    where: {
+                        email: credentials?.email
                     }
+                })
 
-                    return null
+                if (user) {
+                    const match = await compare(credentials!.password, user.password as string)
+
+                    console.log(match)
+
+                    if (match) {
+                        return user
+
+                    } else {
+                        return null
+                    }
+                }
+
+                return null
             }
         })
     ],
     callbacks: {
+        // @ts-ignore
+
         async jwt({ token, user }) {
             return { ...token, ...user };
         },
+        // @ts-ignore
+
         async session({ session, token, user }) {
+            // @ts-ignore
             session.user = token;
             return session;
         },
