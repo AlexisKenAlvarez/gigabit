@@ -10,10 +10,10 @@ export const cloudList = [
 
 export const inputList = [
     {
-        name: "username",
+        name: "email",
         type: "text",
-        label: "username",
-        icon: <FaUser />
+        label: "email",
+        icon: <MdEmail />
     },
     {
         name: "password",

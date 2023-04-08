@@ -4,12 +4,15 @@ import Link from 'next/link';
 import { IoArrowUndoSharp } from 'react-icons/io5'
 import { cloudList, registerInput } from "utils/list";
 import InputBox from "~/components/InputBox";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { registerValues } from "utils/interface";
 import { FcGoogle } from "react-icons/fc"
+import { useRouter } from 'next/router';
+import { GetSessionParams } from "next-auth/react";
 
 const Login = () => {
 
+    const router = useRouter()
     const animation = useAnimation()
 
     async function sequence() {
@@ -88,8 +91,6 @@ const Login = () => {
         } else {
             setError(e => ({ ...e, 'email': "" }))
             setCondition(e => ({ ...e, "second": true }))
-
-
         }
 
         if (password === '') {
@@ -113,16 +114,56 @@ const Login = () => {
         setToggle(current => !current)
     }
 
+    const [debounce, setDebounce] = useState(false)
+
     useEffect(() => {
         const { first, second, third } = condition
-        console.log(error)
+        const { username, email, password } = data
 
-        if (first && second && third) {
-            console.log("Passed")
-        } else {
-            console.log("Not Passed")
+        if (!debounce) {
+            if (first && second && third) {
+                setDebounce(true)
+                fetch("/api/register", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        username,
+                        email,
+                        password
+                    })
+                }).then((response) => {
+                    return response.json()
+                }).then((res) => {
+                    console.log(res)
 
+                    if (res.success) {
+                        setData({
+                            username: '',
+                            email: '',
+                            password: ''
+                        })
+
+                        router.push("/login")
+                    } else {
+                        setDebounce(false)
+
+                        if (res.error === "email") {
+                            setError(e => ({ ...e, 'email': "Email is already taken!" }))
+                            setCondition(e => ({ ...e, "second": false }))
+                        }
+                    }
+
+
+                })
+            } else {
+                console.log("Not Passed")
+
+            }
         }
+
+
     }, [toggle])
 
 
@@ -202,3 +243,25 @@ const Login = () => {
 }
 
 export default Login;
+
+
+import { getSession } from "next-auth/react";
+
+export async function getServerSideProps(context: GetSessionParams | undefined) {
+    const session = await getSession(context)
+
+    if (session) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false,
+            },
+        }
+    } else {
+        return {
+            props: {
+
+            }
+        }
+    }
+}

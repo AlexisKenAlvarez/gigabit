@@ -8,9 +8,34 @@ import { useState, useEffect } from "react";
 import { loginValues } from "utils/interface";
 import { FcGoogle } from "react-icons/fc"
 import InputBoxLogin from "~/components/InputBoxLogin";
+import { signIn, signOut, GetSessionParams } from "next-auth/react";
+import { useRouter } from 'next/router';
+
+import { getSession } from "next-auth/react";
+
+export async function getServerSideProps(context: GetSessionParams | undefined) {
+    const session = await getSession(context)
+
+    if (session) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false,
+            },
+        }
+    } else {
+        return {
+            props: {
+
+            }
+        }
+    }
+}
+
 
 const Login = () => {
 
+    const router = useRouter()
     const animation = useAnimation()
 
     async function sequence() {
@@ -32,7 +57,7 @@ const Login = () => {
 
 
     const [data, setData] = useState<loginValues>({
-        username: '',
+        email: '',
         password: ''
     })
 
@@ -41,7 +66,7 @@ const Login = () => {
     }
 
     const [error, setError] = useState<loginValues>({
-        username: '',
+        email: '',
         password: ''
     })
 
@@ -49,44 +74,44 @@ const Login = () => {
     const [condition, setCondition] = useState({
         first: false,
         second: false,
-        third: false,
     })
 
+
+    function validateEmail(mail: string) {
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
+            return true
+        } else {
+            return false
+        }
+    }
+
     const handleSubmit = () => {
-        const { username, password } = data
+        const { email, password } = data
 
-        if (username === '') {
-            setError(e => ({ ...e, 'username': "Username cannot be empty!" }))
-            setCondition(e => ({ ...e, "first": false }))
-        } else if (username.length > 15) {
-            setError(e => ({ ...e, 'username': "Must not exceed 15 characters." }))
-            setCondition(e => ({ ...e, "first": false }))
-
-        } else if (username.length < 3) {
-            setError(e => ({ ...e, 'username': "Must be atleast 3 characters." }))
+        if (!validateEmail(email)) {
+            setError(e => ({ ...e, 'email': "Email is invalid!" }))
             setCondition(e => ({ ...e, "first": false }))
 
         } else {
-            setError(e => ({ ...e, 'username': "" }))
+            setError(e => ({ ...e, 'email': "" }))
             setCondition(e => ({ ...e, "first": true }))
-
         }
 
         if (password === '') {
             setError(e => ({ ...e, 'password': "Password cannot be empty!" }))
-            setCondition(e => ({ ...e, "third": false }))
+            setCondition(e => ({ ...e, "second": false }))
 
         } else if (password.length > 15) {
             setError(e => ({ ...e, 'password': "Password is too long!" }))
-            setCondition(e => ({ ...e, "third": false }))
+            setCondition(e => ({ ...e, "second": false }))
 
         } else if (password.length < 3) {
             setError(e => ({ ...e, 'password': "Password is too weak!" }))
-            setCondition(e => ({ ...e, "third": false }))
+            setCondition(e => ({ ...e, "second": false }))
 
         } else {
             setError(e => ({ ...e, 'password': "" }))
-            setCondition(e => ({ ...e, "third": true }))
+            setCondition(e => ({ ...e, "second": true }))
 
         }
 
@@ -94,16 +119,39 @@ const Login = () => {
     }
 
     useEffect(() => {
-        const { first, second, third } = condition
-        console.log(error)
+        const { first, second } = condition
 
-        if (first && second && third) {
-            console.log("Passed")
+        if (first && second) {
+            login()
         } else {
             console.log("Not Passed")
-
         }
     }, [toggle])
+
+    const login = async () => {
+        const { email, password } = data
+
+        const result = await signIn("credentials", {
+            email,
+            password,
+            redirect: false,
+        })
+
+        if (result?.ok) {
+            router.push("/")
+        } else {
+            console.log(result?.error)
+        }
+    }
+
+    const googleSignin = async () => {
+        const result = await signIn("google", {
+            redirect: true,
+            callbackUrl: "/"
+        })
+
+        console.log(result)
+    }
 
     return (
         <section className="w-full h-screen bg-lblue relative overflow-hidden">
@@ -149,11 +197,11 @@ const Login = () => {
 
                                         {inputList.map((items, i) => {
                                             return (
-                                                <InputBoxLogin key={i} {...items} value={data[items.name as keyof loginValues].trim()} onChange={handleChange} title={error[items.name as keyof loginValues]} error={error}/>
+                                                <InputBoxLogin key={i} {...items} value={data[items.name as keyof loginValues].trim()} onChange={handleChange} title={error[items.name as keyof loginValues]} error={error} />
                                             )
                                         })}
 
-                                        <button className="bg-google w-full rounded-lg h-11 shadow-googleShadow p-[5px] flex items-center gap-x-2 relative hover:bg-[#418DFF] transition-background ease-in-out duration-300">
+                                        <button className="bg-google w-full rounded-lg h-11 shadow-googleShadow p-[5px] flex items-center gap-x-2 relative hover:bg-[#418DFF] transition-background ease-in-out duration-300" onClick={googleSignin}>
                                             <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
                                                 <FcGoogle className="w-8" />
                                             </div>

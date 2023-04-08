@@ -21,7 +21,7 @@ export interface loginType {
 }
 
 export interface loginValues {
-    username: string,
+    email: string,
     password: string
 }
 
@@ -29,4 +29,10 @@ export interface registerValues {
     username: string,
     email: string,
     password: string,
+}
+
+export interface AuthUser {
+    name: string,
+    email: string,
+    verified: boolean
 }
