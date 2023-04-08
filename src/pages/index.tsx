@@ -1,9 +1,7 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { useEffect } from "react";
 import { AuthUser } from "utils/interface";
-
 import { GetSessionParams, signOut } from "next-auth/react";
 import { getSession } from "next-auth/react";
 

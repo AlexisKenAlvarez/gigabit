@@ -3,12 +3,11 @@ import { motion, useAnimation } from 'framer-motion';
 import Link from 'next/link';
 import { IoArrowUndoSharp } from 'react-icons/io5'
 import { cloudList, inputList } from "utils/list";
-import InputBox from "~/components/InputBox";
 import { useState, useEffect } from "react";
 import { loginValues } from "utils/interface";
 import { FcGoogle } from "react-icons/fc"
 import InputBoxLogin from "~/components/InputBoxLogin";
-import { signIn, signOut, GetSessionParams } from "next-auth/react";
+import { signIn, GetSessionParams } from "next-auth/react";
 import { useRouter } from 'next/router';
 
 import { getSession } from "next-auth/react";

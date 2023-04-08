@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { IoArrowUndoSharp } from 'react-icons/io5'
 import { cloudList, registerInput } from "utils/list";
 import InputBox from "~/components/InputBox";
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import { registerValues } from "utils/interface";
 import { FcGoogle } from "react-icons/fc"
 import { useRouter } from 'next/router';
