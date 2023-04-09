@@ -43,14 +43,20 @@ async function register(req: NextApiRequest, res: NextApiResponse) {
 
             const token = sign(
                 {
-                    expiresIn: "1h",
+                    expiresIn: "24h",
                     username: username,
                     email: email
                 },
-                secret as string
+                secret as string,
+                { expiresIn: "24h" }
             )
 
-            console.log(token)
+            const verification = await prisma.verificationToken.create({
+                data: {
+                    email,
+                    token,
+                }
+            })
 
             res.status(200).json({ success: true, msg: "Account created successfuly!" })
             console.log("Success")

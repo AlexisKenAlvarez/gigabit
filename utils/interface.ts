@@ -1,3 +1,9 @@
+declare module "jsonwebtoken" {
+    export interface JwtPayload {
+        email: string,
+    }
+}
+
 export interface registerType {
     name: string,
     label: string,
@@ -35,4 +41,27 @@ export interface AuthUser {
     name: string,
     email: string,
     verified: boolean
+}
+
+export interface isValid {
+    valid: boolean
+    email: string
+}
+
+export interface decodeType {
+    expiresIn: number,
+    email: string,
+    username: string
+}
+
+export interface userValues {
+    id: string,
+    name: string,
+    email: string,
+    picture: string,
+    sub: string,
+    password: string,
+    verified: boolean,
+    emailVerified: boolean,
+    image: string,
 }

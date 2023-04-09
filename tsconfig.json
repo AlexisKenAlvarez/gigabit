@@ -28,6 +28,6 @@
     "**/*.tsx",
     "**/*.cjs",
     "**/*.mjs"
-, "src/pages/api/auth/[...nextauth].ts"  ],
+, "src/pages/api/auth/[...nextauth].ts", "timeline"  ],
   "exclude": ["node_modules"]
 }
