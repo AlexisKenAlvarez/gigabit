@@ -47,8 +47,6 @@ export const authOptions: NextAuthOptions = ({
                 if (user) {
                     const match = await compare(credentials!.password, user.password as string)
 
-                    console.log(match)
-
                     if (match) {
                         return user
 
@@ -64,12 +62,29 @@ export const authOptions: NextAuthOptions = ({
     callbacks: {
 
         async jwt({ token, user }) {
+
             return { ...token, ...user };
         },
 
         async session({ session, token, user }) {
 
-            session.user = token;
+            const { name, email, picture, sub, id, verified, emailVerified, image, iat, exp, jti } = token
+
+            const userObject = {
+                name,
+                email,
+                picture,
+                sub,
+                id,
+                verified,
+                emailVerified,
+                image,
+                iat,
+                exp,
+                jti
+            }
+
+            session.user = userObject;
             return session;
         },
     },

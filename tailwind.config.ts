@@ -14,7 +14,8 @@ export default {
       },
       fontFamily: {
         pixel: ['Pixel'],
-        vt: ['VT323']
+        vt: ['VT323'],
+        poppins: ['Poppins']
       },
       boxShadow: {
         googleShadow: '0px 5px 0px 0px rgba(38,109,214,1)',

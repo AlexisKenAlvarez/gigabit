@@ -5,7 +5,7 @@ import { AuthUser } from "utils/interface";
 import { GetSessionParams, signOut } from "next-auth/react";
 import { getSession } from "next-auth/react";
 
-export const  getServerSideProps: GetServerSideProps<AuthUser> = async (context: GetSessionParams | undefined) => {
+export const getServerSideProps: GetServerSideProps<AuthUser> = async (context: GetSessionParams | undefined) => {
     const session = await getSession(context)
 
     if (!session) {
@@ -16,6 +16,7 @@ export const  getServerSideProps: GetServerSideProps<AuthUser> = async (context:
             },
         }
     } else {
+        console.log(session)
         return {
             props: {
                 name: session.user!.name,

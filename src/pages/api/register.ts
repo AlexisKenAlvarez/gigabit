@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 import { hash } from 'bcrypt';
+import { sign } from 'jsonwebtoken'
 import { registerValues } from 'utils/interface';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -11,13 +12,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return await register(req, res)
     } else if (req.method === "GET") {
         return await getUser(req, res)
-
     }
 }
 
 async function register(req: NextApiRequest, res: NextApiResponse) {
+    const secret = process.env.NEXT_JWT_SECRET
     const { username, email, password }: registerValues = req.body
-
     const hashed = await hash(password, 10)
 
     try {
@@ -40,6 +40,17 @@ async function register(req: NextApiRequest, res: NextApiResponse) {
                     verified: false,
                 }
             })
+
+            const token = sign(
+                {
+                    expiresIn: "1h",
+                    username: username,
+                    email: email
+                },
+                secret as string
+            )
+
+            console.log(token)
 
             res.status(200).json({ success: true, msg: "Account created successfuly!" })
             console.log("Success")
