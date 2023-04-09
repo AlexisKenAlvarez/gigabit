@@ -9,7 +9,6 @@ import { FcGoogle } from "react-icons/fc"
 import InputBoxLogin from "~/components/InputBoxLogin";
 import { signIn, GetSessionParams } from "next-auth/react";
 import { useRouter } from 'next/router';
-
 import { getSession } from "next-auth/react";
 
 export async function getServerSideProps(context: GetSessionParams | undefined) {

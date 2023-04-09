@@ -62,15 +62,13 @@ export const authOptions: NextAuthOptions = ({
         })
     ],
     callbacks: {
-        // @ts-ignore
 
         async jwt({ token, user }) {
             return { ...token, ...user };
         },
-        // @ts-ignore
 
         async session({ session, token, user }) {
-            // @ts-ignore
+
             session.user = token;
             return session;
         },

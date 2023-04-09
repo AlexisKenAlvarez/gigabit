@@ -154,8 +154,6 @@ const Login = () => {
                             setCondition(e => ({ ...e, "second": false }))
                         }
                     }
-
-
                 })
             } else {
                 console.log("Not Passed")
