@@ -12,4 +12,13 @@
         src: url('../../fonts/pixel.ttf') format("ttf"),
 
     }
+
+    .text-shadow {
+        text-shadow: 2px 2px #111111;
+    }
+
+    .clipped-button {
+        clip-path: polygon(0 0, 100% 0%, 85% 100%, 0% 100%);
+    }
+
 }

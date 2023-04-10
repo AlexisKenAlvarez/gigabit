@@ -10,7 +10,8 @@ export default {
         bttn: '#3D253D',
         google: '#3283FC',
         bttnHover: '#523152',
-        err: '#AC4B3E'
+        err: '#AC4B3E',
+        blk: '#1F1F1F'
       },
       fontFamily: {
         pixel: ['Pixel'],

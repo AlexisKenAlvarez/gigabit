@@ -180,7 +180,7 @@ const Login = () => {
                 <nav className="w-full h-auto p-5 flex justify-between absolute top-0 left-0">
                     <div className="flex items-center gap-x-2">
                         <Image alt="Logo" width="400" height="400" src="/logo.webp" className="w-10" />
-                        <h1 className="text-2xl">GIGABIT</h1>
+                        <h1 className="text-2xl">EYEDOWL</h1>
                     </div>
 
                     <div className="flex items-center gap-x-2">
@@ -221,9 +221,7 @@ const Login = () => {
                                         </button>
 
 
-                                        <button className="bg-bttn hover:bg-bttnHover transition-background ease-in-out duration-300 w-full rounded-lg h-11 shadow-bttnShadow p-[5px] flex items-center gap-x-2 relative mt-5">
-                                            <h3 className="text-center w-full absolute text-2xl" onClick={handleSubmit}>Sign up</h3>
-                                        </button>
+                                        <RoundedButton onClick={handleSubmit} text="Sign up" />
 
                                     </div>
 
@@ -244,6 +242,8 @@ export default Login;
 
 
 import { getSession } from "next-auth/react";
+import Button from "~/components/Button";
+import RoundedButton from "~/components/RoundedButton";
 
 export async function getServerSideProps(context: GetSessionParams | undefined) {
     const session = await getSession(context)

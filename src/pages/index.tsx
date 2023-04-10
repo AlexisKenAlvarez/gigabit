@@ -1,44 +1,65 @@
 import { GetServerSideProps, type NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
-import { AuthUser, userValues } from "utils/interface";
-import { GetSessionParams, signOut } from "next-auth/react";
+import { AuthUser } from "utils/interface";
+import { GetSessionParams, signOut, signIn } from "next-auth/react";
 import { getSession } from "next-auth/react";
 import { PrismaClient } from "@prisma/client";
 import HeroCanvas from "~/canvas/HeroCanvas";
+import Image from 'next/image';
+import Button from "~/components/Button";
+import { navList } from "utils/list";
+import { motion } from "framer-motion";
 
 const prisma = new PrismaClient()
 
 export const getServerSideProps: GetServerSideProps = async (context: GetSessionParams | undefined) => {
     const session = await getSession(context)
 
-    if (!session) {
-        return {
-            redirect: {
-                destination: '/login',
-                permanent: false,
-            },
-        }
-    } else {
-        // IF THERE IS A SESSION
 
+    // IF THERE IS A SESSION
+    console.log("session" + session)
+
+    if (session) {
         const user = await prisma.user.findUnique({
             where: {
-                email: session.user!.email,
+                email: session!.user!.email,
             }
         })
 
         return {
             props: {
-                name: session.user!.name,
-                email: session.user!.email,
-                verified: user?.verified
+                name: session?.user!.name,
+                email: session?.user!.email,
+                verified: user?.verified,
+                ses: session ? true : false
+            }
+        }
+    } else {
+        return {
+            props: {
+                ses: session ? true : false
             }
         }
     }
+
 }
 
-const Home: NextPage<AuthUser> = ({ name, email, verified }) => {
+const Home: NextPage<AuthUser> = ({ name, email, verified, ses }) => {
+
+    const word = "GIGABIT"
+    const title = word.split("")
+
+    const handleButton = async () => {
+        if (ses) {
+            const out = await signOut()
+        } else {
+            const login = await signIn()
+        }
+    }
+
+    const handlePlay = async () => {
+
+    }
 
     return (
         <>
@@ -48,10 +69,70 @@ const Home: NextPage<AuthUser> = ({ name, email, verified }) => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <section>
-                <div className="w-full h-screen">
-                    <HeroCanvas />
-                </div>
+            <section className="relative w-full h-screen">
+                {/* NAV BAR */}
+                <nav className="w-full px-4 bg-blk text-white flex justify-between items-center absolute top-0 left-0 z-20 py-4 lg:py-0">
+                    <div className="flex items-center gap-x-2">
+                        <Image alt="Logo" width="400" height="400" src="/logo.webp" className="w-10" />
+                        <h1 className="text-2xl">EYEDOWL</h1>
+                    </div>
+
+                    <div className="flex items-center gap-x-9">
+                        <ul className=" font-vt gap-x-11 uppercase text-xl lg:flex hidden">
+                            {navList.map((items, i) => {
+                                return (
+
+                                    <li className="cursor-pointer relative  group h-[4.5rem] flex items-center" key={i}>
+                                        <p className="group-hover:bg-white/10 px-2 rounded-md">{items.label}</p>
+                                        <div className="absolute w-full h-[5px] left-0 right-0 mx-auto bottom-2 bg-bttn hidden group-hover:block"></div>
+                                    </li>
+                                )
+                            })}
+                        </ul>
+
+                        <div className="w-[10rem] sm:text-2xl text-lg font-vt">
+                            <Button onClick={handleButton} text={ses ? "SIGN OUT" : "SIGN IN"} className="" />
+                        </div>
+                    </div>
+
+                </nav>
+
+                <main className="w-full h-screen relative">
+
+                    {/* SKYBOX */}
+                    <div className="absolute w-full h-full left-0 top-0">
+                        <HeroCanvas />
+                    </div>
+
+                    {/* CONTENT GOES HERE */}
+                    <div className="w-full h-full relative z-10 flex items-center justify-center text-white pointer-events-none">
+
+                        <div className="w-[1px] h-full bg-white absolute left-20"></div>
+                        <div className="w-[1px] h-full bg-white absolute left-[26rem] sm:block hidden"></div>
+                        <div className="w-[1px] h-full bg-white absolute right-48"></div>
+
+
+
+                        <div className="text-center select-none">
+                            <motion.h3 initial={{ y: 200, opacity: 0 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, type: "spring", delay: 1, stiffness: "200" }} className="font-poppins font-[800] text-shadow">A 2d based platform game</motion.h3>
+
+                            <div className="md:text-9xl text-7xl mt-3 flex items-center">
+
+                                {title.map((items, i) => {
+                                    return (
+                                        <motion.h1 initial={{ y: 200, opacity: 0 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, type: "spring", delay: 1.2 + (i * 0.1), stiffness: "200" }} key={i} className=" text-shadow cursor-crosshair">{items}</motion.h1>
+                                    )
+                                })}
+
+                            </div>
+
+                            <motion.div initial={{ y: 200, opacity: 0 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, type: "spring", delay: 1.4, stiffness: "200" }} className="w-[12rem] font-vt mx-auto mt-10 pointer-events-auto">
+                                <Button onClick={handlePlay} text="PLAY FREE" />
+                            </motion.div>
+                        </div>
+
+                    </div>
+                </main>
             </section>
         </>
     );

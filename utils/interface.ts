@@ -41,6 +41,7 @@ export interface AuthUser {
     name: string,
     email: string,
     verified: boolean
+    ses: boolean
 }
 
 export interface isValid {

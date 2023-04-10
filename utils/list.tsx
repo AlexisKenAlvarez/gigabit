@@ -43,3 +43,23 @@ export const registerInput = [
         icon: <FaLock />
     },
 ]
+
+export const navList = [
+    {
+        label: "Game info",
+        link: ""
+    },
+    {
+        label: "news",
+        link: ""
+    },
+    {
+        label: "support",
+        link: ""
+    },
+    {
+        label: "socials",
+        link: ""
+    },
+
+]

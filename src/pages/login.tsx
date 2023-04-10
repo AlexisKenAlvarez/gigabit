@@ -10,7 +10,7 @@ import InputBoxLogin from "~/components/InputBoxLogin";
 import { signIn, GetSessionParams } from "next-auth/react";
 import { useRouter } from 'next/router';
 import { getSession } from "next-auth/react";
-import Button from "~/components/Button";
+import RoundedButton from "~/components/RoundedButton";
 
 export async function getServerSideProps(context: GetSessionParams | undefined) {
     const session = await getSession(context)
@@ -167,7 +167,7 @@ const Login = () => {
                 <nav className="w-full h-auto p-5 flex justify-between absolute top-0 left-0">
                     <div className="flex items-center gap-x-2">
                         <Image alt="Logo" width="400" height="400" src="/logo.webp" className="w-10" />
-                        <h1 className="text-2xl">GIGABIT</h1>
+                        <h1 className="text-2xl">EYEDOWL</h1>
                     </div>
 
                     <div className="flex items-center gap-x-2">
@@ -206,8 +206,8 @@ const Login = () => {
                                             </div>
                                             <h3 className="text-center w-full absolute">Sign in with Google</h3>
                                         </button>
-
-                                        <Button onClick={handleSubmit} text="Sign in" />
+                                        
+                                        <RoundedButton onClick={handleSubmit} text="Sign in" />
 
                                     </div>
 

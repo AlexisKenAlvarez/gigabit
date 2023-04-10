@@ -17,7 +17,7 @@ const HeroCanvas = () => {
                 <HeroScene />
             </Suspense>
             <EffectComposer>
-                <HueSaturation saturation={0.4} />
+                <HueSaturation saturation={0.2} />
                 <BrightnessContrast brightness={-0.1} contrast={0.4} />
             </EffectComposer>
         </Canvas>
